@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#100d20">
+  <meta name="description" content="Safety Bubble — personal safety, emergency SOS, trusted contacts, safe journeys and Bluetooth device tools.">
+  <title>Safety Bubble — Your safety, in your hands</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+  <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <div id="authView" class="auth-shell">
+    <section class="auth-brand">
+      <div class="brand-mark"><span class="brand-orbit"></span><span class="brand-core">✦</span></div>
+      <p class="eyebrow">PERSONAL SAFETY, REIMAGINED</p>
+      <h1>Your safety.<br><span>Your power.</span></h1>
+      <p class="auth-copy">A calmer way to feel prepared, connected, and in control — wherever life takes you.</p>
+      <div class="quote-card"><span class="quote-mark">“</span><p id="authQuote">Courage is not the absence of fear, but the decision that your safety matters.</p><small>YOUR DAILY REMINDER</small></div>
+    </section>
+    <section class="auth-card glass">
+      <div class="mobile-brand"><div class="mini-mark">✦</div><span>Safety Bubble</span></div>
+      <div class="auth-tabs"><button class="tab active" data-auth-tab="signin">Sign in</button><button class="tab" data-auth-tab="signup">Create account</button></div>
+      <h2 id="authHeading">Welcome back</h2><p class="muted" id="authSubheading">Sign in to your safety space.</p>
+      <form id="emailAuthForm" class="stack">
+        <label>Email address<input id="authEmail" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+        <label>Password<input id="authPassword" type="password" minlength="6" autocomplete="current-password" required placeholder="At least 6 characters"></label>
+        <button id="emailAuthSubmit" class="btn primary wide" type="submit">Sign in <span>→</span></button>
+      </form>
+      <div class="or-divider"><span>or continue with</span></div>
+      <button id="googleSignIn" class="btn secondary wide" type="button"><span class="google-g">G</span> Continue with Google</button>
+      <button id="phoneAuthToggle" class="text-button" type="button">Use phone verification instead</button>
+      <form id="phoneAuthForm" class="stack hidden">
+        <label>Phone number in international format<input id="phoneNumber" type="tel" autocomplete="tel" placeholder="+919876543210"></label>
+        <div id="recaptchaContainer"></div>
+        <button id="sendOtp" class="btn secondary wide" type="button">Send verification code</button>
+        <label>Verification code<input id="phoneOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="SMS code"></label>
+        <button id="verifyOtp" class="btn primary wide" type="button">Verify and sign in</button>
+      </form>
+      <p class="fine-print">By continuing, you agree to use emergency tools responsibly. This website does not replace emergency services.</p>
+    </section>
+  </div>
+
+  <div id="appView" class="app-shell hidden">
+    <aside class="sidebar glass">
+      <a class="brand-lockup" href="#home" aria-label="Safety Bubble home"><span class="mini-mark">✦</span><span>Safety Bubble<small>STAY READY. STAY SAFE.</small></span></a>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-screen="home"><span>⌂</span>Overview</button>
+        <button class="nav-item" data-screen="map"><span>◎</span>Safety map</button>
+        <button class="nav-item" data-screen="contacts"><span>♡</span>Trusted circle</button>
+        <button class="nav-item" data-screen="journey"><span>↗</span>Safe journey</button>
+        <button class="nav-item" data-screen="timeline"><span>◷</span>Activity timeline</button>
+        <button class="nav-item" data-screen="device"><span>⌁</span>Bluetooth device</button>
+        <button class="nav-item" data-screen="volunteer"><span>✧</span>Volunteer</button>
+        <button class="nav-item" data-screen="settings"><span>⚙</span>Settings</button>
+      </nav>
+      <div class="sidebar-bottom"><div class="sidebar-note"><span class="status-dot"></span><div><strong>Safety starts with you</strong><small>Your data is private by default.</small></div></div><button id="signOut" class="nav-item signout"><span>↪</span>Sign out</button></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button id="mobileMenu" class="icon-button mobile-only" aria-label="Open menu">☰</button>
+        <div><p class="eyebrow" id="dateLabel">YOUR PERSONAL SAFETY SPACE</p><h1 id="screenTitle">Good to see you<span class="title-period">.</span></h1></div>
+        <div class="top-actions"><button id="themeToggle" class="icon-button" aria-label="Toggle theme" title="Toggle theme">☼</button><div class="user-chip"><span id="userAvatar">S</span><div><strong id="userName">Safety member</strong><small id="userEmail">Protected account</small></div></div></div>
+      </header>
+
+      <section id="screen-home" class="screen active">
+        <div class="hero-panel">
+          <div class="hero-copy"><span class="pill"><span class="status-dot"></span> YOUR SAFETY DASHBOARD</span><h2>Feel prepared.<br><span>Move with confidence.</span></h2><p>Small steps, a trusted circle, and a plan can make a meaningful difference.</p><div class="hero-actions"><button class="btn light" data-go="contacts">Set up trusted circle <span>→</span></button><button class="btn ghost-light" data-go="map">Explore safety map</button></div></div>
+          <div class="hero-art" aria-hidden="true"><div class="orbit orbit-1"></div><div class="orbit orbit-2"></div><div class="shield-illustration"><span>✦</span></div><div class="floating-chip chip-one">✦ Prepared</div><div class="floating-chip chip-two">♡ Connected</div></div>
+        </div>
+        <div class="quote-strip"><div class="quote-icon">“</div><div><p id="dailyQuote">You deserve to feel safe, heard, and supported.</p><small>YOUR DAILY REMINDER</small></div><button id="nextQuote" class="icon-button" aria-label="Next quote">↻</button></div>
+        <div class="section-heading"><div><p class="eyebrow">YOUR ESSENTIALS</p><h2>Safety at a glance</h2></div><span class="muted small">Your dashboard · Live permissions</span></div>
+        <div class="stat-grid">
+          <article class="stat-card glass"><div class="stat-icon purple">⌖</div><div><p>Location</p><strong id="locationStatus">Not shared</strong><small id="locationDetail">Enable when you need it</small></div><button class="card-arrow" data-go="map" aria-label="Open map">↗</button></article>
+          <article class="stat-card glass"><div class="stat-icon pink">♡</div><div><p>Trusted contacts</p><strong id="contactCount">0 contacts</strong><small>Your personal support circle</small></div><button class="card-arrow" data-go="contacts" aria-label="Open contacts">↗</button></article>
+          <article class="stat-card glass"><div class="stat-icon blue">⌁</div><div><p>Device</p><strong id="deviceStatus">Not connected</strong><small>Connect a supported BLE device</small></div><button class="card-arrow" data-go="device" aria-label="Open device">↗</button></article>
+          <article class="stat-card glass"><div class="stat-icon gold">◷</div><div><p>Recent activity</p><strong id="activityCount">0 events</strong><small>Your private safety timeline</small></div><button class="card-arrow" data-go="timeline" aria-label="Open timeline">↗</button></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel glass sos-panel"><div class="panel-heading"><div><p class="eyebrow">NEED HELP NOW?</p><h2>Emergency SOS</h2></div><span class="live-badge"><i></i> READY</span></div><p class="muted">Use SOS only when you need urgent help. We’ll attempt to capture your location and prepare a message for your trusted contacts.</p><div class="sos-stage"><div class="sos-ring"></div><button id="sosButton" class="sos-button" aria-label="Activate emergency SOS"><span> SOS </span><small>PRESS FOR HELP</small></button></div><p class="sos-footnote">This web app cannot silently call emergency services or guarantee SMS delivery.</p></article>
+          <article class="panel glass checklist-panel"><div class="panel-heading"><div><p class="eyebrow">A LITTLE PREPARATION</p><h2>Your safety checklist</h2></div><span class="check-count" id="checkProgress">0/3</span></div><div class="checklist"><label class="check-row"><input type="checkbox" data-check="contact"><span class="custom-check">✓</span><span><strong>Add a trusted contact</strong><small>Choose someone you can reach</small></span></label><label class="check-row"><input type="checkbox" data-check="location"><span class="custom-check">✓</span><span><strong>Test your location</strong><small>Check GPS permission outdoors</small></span></label><label class="check-row"><input type="checkbox" data-check="journey"><span class="custom-check">✓</span><span><strong>Plan a safe journey</strong><small>Set a destination and ETA</small></span></label></div><button class="btn secondary wide" data-go="settings">Review safety settings <span>→</span></button></article>
+        </div>
+      </section>
+
+      <section id="screen-map" class="screen">
+        <div class="section-heading"><div><p class="eyebrow">KNOW YOUR SURROUNDINGS</p><h2>Safety map</h2><p class="muted">Your location is requested only when you choose to share it.</p></div><button id="locateMe" class="btn primary">⌖ Find my location</button></div>
+        <div class="map-layout"><div class="panel glass map-panel"><div id="safetyMap" role="application" aria-label="Safety map"></div><div class="map-legend"><span><i class="legend-dot you"></i>You</span><span><i class="legend-dot safe"></i>Nearby places</span></div></div><aside class="panel glass nearby-panel"><p class="eyebrow">AROUND YOU</p><h3>Places that may help</h3><p class="muted small">Nearby place search opens OpenStreetMap in a new tab. Results depend on the public map service.</p><button id="findPolice" class="place-row"><span class="place-icon">✚</span><span><strong>Police stations</strong><small>Search nearby</small></span><span>↗</span></button><button id="findHospital" class="place-row"><span class="place-icon">＋</span><span><strong>Hospitals</strong><small>Search nearby</small></span><span>↗</span></button><button id="findPharmacy" class="place-row"><span class="place-icon">✚</span><span><strong>Pharmacies</strong><small>Search nearby</small></span><span>↗</span></button><button id="findSafe" class="place-row"><span class="place-icon">⌂</span><span><strong>Public safe places</strong><small>Search nearby</small></span><span>↗</span></button><div class="notice">For an immediate emergency in India, call <a href="tel:112">112</a>. Do not rely on this website as your only way to get help.</div></aside></div>
+      </section>
+
+      <section id="screen-contacts" class="screen">
+        <div class="section-heading"><div><p class="eyebrow">YOUR PEOPLE</p><h2>Trusted circle</h2><p class="muted">Contacts are stored under your signed-in account.</p></div><button id="addContactOpen" class="btn primary">＋ Add contact</button></div>
+        <div id="contactsList" class="contact-grid"></div>
+        <div id="contactsEmpty" class="empty-state glass"><div class="empty-icon">♡</div><h3>Your circle starts here</h3><p>Add someone you trust. During SOS, you can prepare a location message and open your phone's available sharing options.</p><button class="btn primary" data-action="add-contact">Add your first contact</button></div>
+      </section>
+
+      <section id="screen-journey" class="screen">
+        <div class="section-heading"><div><p class="eyebrow">GET THERE WITH A PLAN</p><h2>Safe journey</h2><p class="muted">Set your destination and choose when to share progress.</p></div></div>
+        <div class="journey-layout"><form id="journeyForm" class="panel glass stack"><h3>Plan a journey</h3><label>Destination<input id="journeyDestination" required maxlength="180" placeholder="e.g. Home, office, railway station"></label><label>Expected arrival time<input id="journeyEta" type="datetime-local" required></label><label>Optional note<input id="journeyNote" maxlength="300" placeholder="Route or check-in note"></label><button class="btn primary wide" type="submit">Save journey plan <span>→</span></button><p class="fine-print">This stores your plan. It does not automatically track in the background or alert others unless you explicitly share.</p></form><div class="panel glass journey-current"><p class="eyebrow">CURRENT PLAN</p><div id="currentJourney"><div class="empty-icon">↗</div><h3>No active journey</h3><p class="muted">Create a journey plan to see it here.</p></div></div></div>
+      </section>
+
+      <section id="screen-timeline" class="screen">
+        <div class="section-heading"><div><p class="eyebrow">YOUR PERSONAL RECORD</p><h2>Activity timeline</h2><p class="muted">Only your account's events are displayed here.</p></div><button id="exportTimeline" class="btn secondary">↓ Export CSV</button></div>
+        <div id="timelineList" class="timeline-list panel glass"></div>
+      </section>
+
+      <section id="screen-device" class="screen">
+        <div class="section-heading"><div><p class="eyebrow">COMPANION CONNECTIVITY</p><h2>Bluetooth device</h2><p class="muted">Connect a real Bluetooth Low Energy device supported by your browser.</p></div><span id="blePill" class="pill">BLE status · Ready to check</span></div>
+        <div class="device-layout"><div class="panel glass device-hero"><div class="device-orb"><span>⌁</span><i></i></div><p class="eyebrow">SAFETY BUBBLE COMPANION</p><h3 id="bleName">No device connected</h3><p id="bleDescription" class="muted">Choose a BLE device from your browser's device picker. A normal phone is not automatically a BLE peripheral.</p><button id="connectBle" class="btn primary wide">⌁ Connect Bluetooth device</button><button id="disconnectBle" class="btn secondary wide hidden">Disconnect device</button><p class="fine-print">Requires HTTPS (or localhost), a compatible browser, and device permission. Only real values exposed by the device are shown.</p></div><div class="panel glass device-details"><h3>Device information</h3><div class="device-info-grid"><div><small>Connection</small><strong id="bleConnection">Disconnected</strong></div><div><small>Device name</small><strong id="bleDeviceName">—</strong></div><div><small>Device ID</small><strong id="bleDeviceId">—</strong></div><div><small>Signal strength</small><strong id="bleRssi">Not provided by Web Bluetooth</strong></div><div><small>Battery level</small><strong id="bleBattery">Not provided</strong></div><div><small>Services</small><strong id="bleServices">Not discovered</strong></div></div><div id="bleLog" class="ble-log" aria-live="polite">Device activity will appear here.</div></div></div>
+      </section>
+
+      <section id="screen-volunteer" class="screen">
+        <div class="section-heading"><div><p class="eyebrow">COMMUNITY SUPPORT</p><h2>Volunteer network</h2><p class="muted">Register your interest in helping. Verification and dispatch are not automatic.</p></div></div>
+        <div class="volunteer-layout"><div class="panel glass"><h3>Become a volunteer</h3><p class="muted">Share your availability preference. Never approach a dangerous situation; contact emergency services first.</p><form id="volunteerForm" class="stack"><label>Display name<input id="volunteerName" required maxlength="80" placeholder="Name shown to coordinators"></label><label>City or area<input id="volunteerArea" required maxlength="100" placeholder="City / area"></label><label>How could you help?<select id="volunteerType"><option value="check-in">Check-in / phone support</option><option value="safe-place">Offer information about public safe places</option><option value="first-aid">First-aid trained (self-declared)</option><option value="transport">Transport support (self-declared)</option></select></label><label class="check-row"><input id="volunteerConsent" type="checkbox" required><span class="custom-check">✓</span><span><strong>I agree to be contacted about volunteer coordination.</strong><small>Do not submit sensitive personal information.</small></span></label><button class="btn primary wide" type="submit">Save volunteer registration</button></form></div><div class="panel glass"><div class="stat-icon pink">✧</div><h3>Help responsibly</h3><ul class="safe-list"><li>Keep your own safety first.</li><li>Never claim official responder status without authorization.</li><li>Do not share another person's location outside an authorized emergency.</li><li>This prototype does not dispatch volunteers or expose live SOS feeds.</li></ul></div></div>
+      </section>
+
+      <section id="screen-settings" class="screen">
+        <div class="section-heading"><div><p class="eyebrow">YOUR CONTROL CENTER</p><h2>Settings & privacy</h2><p class="muted">Control what this browser is allowed to access.</p></div></div>
+        <div class="settings-grid"><article class="panel glass"><h3>Account</h3><div class="setting-row"><div><strong id="settingsAccount">Signed in</strong><small>Firebase Authentication</small></div><button id="settingsSignOut" class="btn secondary">Sign out</button></div></article><article class="panel glass"><h3>Privacy & permissions</h3><div class="setting-row"><div><strong>Location</strong><small>Requested only when you use location features.</small></div><button id="settingsLocation" class="btn secondary">Test location</button></div><div class="setting-row"><div><strong>Notifications</strong><small>Browser notifications may not work when the app is closed.</small></div><button id="enableNotifications" class="btn secondary">Enable notifications</button></div><div class="setting-row"><div><strong>Theme</strong><small>Switch appearance.</small></div><button id="settingsTheme" class="btn secondary">Toggle theme</button></div></article><article class="panel glass"><h3>Emergency guidance</h3><p class="muted">In India, dial <a href="tel:112">112</a> for emergencies. Keep trusted people informed and do not wait for an app if danger is immediate.</p><p class="fine-print">No web app can guarantee GPS accuracy, network availability, SMS delivery, emergency response, or background execution on every phone.</p></article></div>
+      </section>
+
+      <footer class="app-footer"><span>Safety Bubble <span class="footer-dot">✦</span> Stay ready. Stay safe.</span><span>Built for preparedness · Not a substitute for emergency services</span></footer>
+    </main>
+    <nav class="bottom-nav" aria-label="Mobile navigation"><button class="active" data-screen="home"><span>⌂</span><small>Home</small></button><button data-screen="map"><span>◎</span><small>Map</small></button><button data-screen="contacts"><span>♡</span><small>Circle</small></button><button data-screen="timeline"><span>◷</span><small>Activity</small></button><button data-screen="settings"><span>⚙</span><small>Settings</small></button></nav>
+  </div>
+
+  <dialog id="contactDialog" class="modal glass"><form id="contactForm" class="stack"><div class="modal-heading"><div><p class="eyebrow">YOUR TRUSTED CIRCLE</p><h2>Add a contact</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="Close">×</button></div><label>Full name<input id="contactName" required maxlength="80" placeholder="Contact name"></label><label>Phone number<input id="contactPhone" required type="tel" maxlength="30" placeholder="+91 98765 43210"></label><label>Relationship<select id="contactRelation"><option>Family</option><option>Friend</option><option>Guardian</option><option>Colleague</option><option>Other</option></select></label><label>Email (optional)<input id="contactEmail" type="email" maxlength="160" placeholder="contact@example.com"></label><div class="modal-actions"><button type="button" class="btn secondary" data-close-dialog>Cancel</button><button class="btn primary" type="submit">Save contact</button></div></form></dialog>
+  <dialog id="sosDialog" class="modal glass sos-modal"><div class="modal-heading"><div><p class="eyebrow">EMERGENCY SOS</p><h2>Prepare to contact help</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="Close">×</button></div><p id="sosStatus" class="muted">Attempting to get your location…</p><div id="sosLocation" class="sos-location"></div><div id="sosContactActions" class="stack"></div><div class="notice danger-notice">If you are in immediate danger in India, call <a href="tel:112">112</a>. This page cannot silently call or text anyone.</div><div class="modal-actions"><button id="cancelSos" class="btn secondary">Close</button><button id="call112" class="btn danger">Call 112</button></div></dialog>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics-compat.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="./firebase-config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
