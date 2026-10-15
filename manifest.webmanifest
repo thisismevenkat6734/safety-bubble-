@@ -1,0 +1,24 @@
+{
+"name": "Safety Bubble",
+"short_name": "Safety Bubble",
+"description": "Personal safety, trusted contacts and emergency preparedness.",
+"start_url": "./",
+"scope": "./",
+"display": "standalone",
+"orientation": "portrait",
+"background_color": "#0e0b1b",
+"theme_color": "#100d20",
+"categories": [
+"lifestyle",
+"utilities",
+"safety"
+],
+"icons": [
+{
+"src": "./assets/icon.svg",
+"sizes": "any",
+"type": "image/svg+xml",
+"purpose": "any maskable"
+}
+]
+}
